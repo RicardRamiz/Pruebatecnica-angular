@@ -1,0 +1,158 @@
+@if (status() === 'loading' || status() === 'idle') {
+    <div class="feedback">
+      <p>Cargando cursos...</p>
+    </div>
+  } @else if (status() === 'error') {
+    <div class="feedback">
+      <p>{{ error() }}</p>
+    </div>
+  } @else {
+    <section class="page">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brandIcon">A</span>
+          <span>Cursos</span>
+        </div>
+  
+        <input
+          class="search"
+          type="search"
+          [value]="searchTerm()"
+          placeholder="Buscar cursos..."
+          (input)="updateSearchTerm($event)"
+        />
+  
+        <div class="userActions">
+          <span>🔔</span>
+          <span>⚙️</span>
+          <span class="avatar">
+            {{ firstName().charAt(0).toUpperCase() }}
+          </span>
+        </div>
+      </header>
+  
+      <div class="content">
+        <section class="hero">
+          <h1>¡Hola, {{ firstName() }}!</h1>
+          <p>
+            Tienes <strong>{{ coursesInProgress() }} cursos</strong> en progreso
+            para alcanzar tus metas hoy.
+          </p>
+        </section>
+  
+        <section class="controls">
+          <nav class="tabs">
+            <button
+              [class.activeTab]="activeTab() === 'all'"
+              (click)="activeTab.set('all')"
+            >
+              Todos los cursos
+            </button>
+            <button
+              [class.activeTab]="activeTab() === 'in-progress'"
+              (click)="activeTab.set('in-progress')"
+            >
+              En curso
+            </button>
+            <button
+              [class.activeTab]="activeTab() === 'finished'"
+              (click)="activeTab.set('finished')"
+            >
+              Finalizados
+            </button>
+            <button
+              [class.activeTab]="activeTab() === 'favorites'"
+              (click)="activeTab.set('favorites')"
+            >
+              Favoritos
+            </button>
+          </nav>
+  
+          <div class="filters">
+            <select [value]="selectedSector()" (change)="updateSector($event)">
+              <option value="all">Filtrar</option>
+              @for (sector of sectors(); track sector) {
+                <option [value]="sector">{{ sector }}</option>
+              }
+            </select>
+  
+            <select [value]="sortOption()" (change)="updateSort($event)">
+              <option value="default">Ordenar por</option>
+              <option value="name-asc">Nombre A-Z</option>
+              <option value="progress-desc">Mayor progreso</option>
+              <option value="progress-asc">Menor progreso</option>
+              <option value="score-desc">Mejor calificación</option>
+            </select>
+          </div>
+        </section>
+  
+        @if (filteredCourses().length === 0) {
+          <div class="emptyState">
+            <h2>
+              {{
+                activeTab() === 'favorites'
+                  ? 'No tienes favoritos aún'
+                  : 'No encontramos cursos'
+              }}
+            </h2>
+            <p>
+              {{
+                activeTab() === 'favorites'
+                  ? 'Marca cursos como favoritos para encontrarlos rápidamente aquí.'
+                  : 'Intenta ajustar la búsqueda o los filtros.'
+              }}
+            </p>
+          </div>
+        } @else {
+          <section class="grid">
+            @for (course of filteredCourses(); track course.id) {
+              <article class="card">
+                <div class="imageWrapper">
+                  <img [src]="course.imageUrl" [alt]="course.title" />
+  
+                  <span
+                    class="badge"
+                    [style.background-color]="course.sectorColor"
+                  >
+                    {{ course.sectorName }}
+                  </span>
+                </div>
+  
+                <div class="cardBody">
+                  <div>
+                    <h2>{{ course.title }}</h2>
+                    <p>{{ course.sectorName }}</p>
+                  </div>
+  
+                  <div class="progressInfo">
+                    <div class="progressHeader">
+                      <span>
+                        {{ course.isFinished ? 'Completado' : 'Progreso' }}
+                      </span>
+                      <strong>{{ course.progress }}%</strong>
+                    </div>
+  
+                    <div class="progressTrack">
+                      <span
+                        class="progressBar"
+                        [style.width.%]="course.progress"
+                      ></span>
+                    </div>
+                  </div>
+  
+                  @if (course.isFinished) {
+                    <div class="finishedActions">
+                      <button class="primaryButton">Imprimir constancia</button>
+                      <button class="secondaryButton">LinkedIn</button>
+                    </div>
+                  } @else {
+                    <button class="primaryButton">Continuar viendo</button>
+                  }
+                </div>
+              </article>
+            }
+          </section>
+        }
+      </div>
+    </section>
+  }

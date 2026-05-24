@@ -1,0 +1,9 @@
+
+@use './reset';
+@use './variables';
+
+body {
+  font-family: inherit;
+  background-color: variables.$color-background;
+  color: variables.$color-text;
+}
