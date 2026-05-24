@@ -3,9 +3,24 @@
 Dashboard de cursos construido con **Angular**, **TypeScript** y **SCSS**.  
 Consume el API de inscripciones para mostrar el progreso de cursos, filtros por sector, búsqueda en tiempo real y ordenamiento.
 
+La aplicación muestra un dashboard de cursos con:
+
+Buscador por nombre de curso.
+Tabs por estado:
+Todos los cursos
+En curso
+Finalizados
+Favoritos
+Filtro por sector.
+Ordenamiento.
+Cards de cursos.
+Progreso del curso.
+Acciones para cursos finalizados.
+Estados de carga, error y vacío.
+
 ---
 
-## 🚀 Tecnologías
+## Tecnologías
 
 - [Angular]
 - [TypeScript]
@@ -14,7 +29,7 @@ Consume el API de inscripciones para mostrar el progreso de cursos, filtros por 
 
 ---
 
-## 📋 Requisitos previos
+## Requisitos previos
 
 - **Node.js** 18.x o superior
 - **Angular CLI** instalado globalmente:
@@ -57,6 +72,15 @@ src/
 
 ## API consumida
 GET https://besvc.capacitateparaelempleo.org/api/inscriptions/TestReport
+
+## Tipado
+Se definieron interfaces para representar la respuesta del endpoint:
+
+TestReportResponse Person Inscription Curso Sector También se creó un tipo adaptado para la UI:
+
+CursoCardItem
+
+Esto evita acoplar directamente los componentes visuales a la estructura del API.
 
 ## Decisiones Tecnicas
 
